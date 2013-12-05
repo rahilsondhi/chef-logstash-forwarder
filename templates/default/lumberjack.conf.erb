@@ -1,0 +1,17 @@
+description "Lumberjack"
+author "Chef"
+
+start on (filesystem and net-device-up)
+stop on runlevel [!2345]
+
+respawn
+respawn limit 5 30
+
+chdir <%= @dir %>
+setuid <%= @user %>
+
+script
+  exec <%= @dir %>/bin/logstash-forwarder.sh --host <%= @host %> --port <%= @port %> --ssl-ca-path <%= @ssl_certificate %> <%= @files_to_watch.join(" ") %> >> <%= @log_dir %>/logstash-forwarder.log 2>&1
+end script
+
+emits logstash-forwarder-running
