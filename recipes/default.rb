@@ -24,15 +24,6 @@ when "debian"
     provider Chef::Provider::Package::Dpkg
     action :install
   end
-when "rhel","fedora"
-  cookbook_file "#{Chef::Config[:file_cache_path]}/logstash-forwarder.x86_64.rpm" do
-    source "logstash-forwarder-#{node["logstash-forwarder"]["version"]}-1.x86_64.rpm"
-  end
-
-  yum_package "logstash-forwarder" do
-    source "#{Chef::Config[:file_cache_path]}/logstash-forwarder.x86_64.rpm"
-    action :install
-  end
 end
 
 directory node["logstash-forwarder"]["log_dir"] do
@@ -59,9 +50,24 @@ when "debian"
     variables(
       :dir              => node["logstash-forwarder"]["dir"],
       :user             => node["logstash-forwarder"]["user"],
-      :host             => node["logstash-forwarder"]["host"],
+      :log_dir          => node["logstash-forwarder"]["log_dir"],
+      :config_file      => node["logstash-forwarder"]["config_file"]
+    )
+    notifies :restart, "service[logstash-forwarder]"
+  end
+
+  template node["logstash-forwarder"]["config_file"] do
+    mode "0644"
+    source "logstash-forwarder.settings.conf.erb"
+    variables(
+      :dir              => node["logstash-forwarder"]["dir"],
+      :user             => node["logstash-forwarder"]["user"],
+      :hosts            => node["logstash-forwarder"]["hosts"],
       :port             => node["logstash-forwarder"]["port"],
-      :ssl_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
+      :timeout          => node["logstash-forwarder"]["timeout"],
+      :ssl_certificate  => node["logstash-forwarder"]["ssl_certificate_path"],
+      :ssl_ca_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
+      :ssl_key          => node["logstash-forwarder"]["ssl_key_path"],
       :log_dir          => node["logstash-forwarder"]["log_dir"],
       :files_to_watch   => node["logstash-forwarder"]["files_to_watch"]
     )
@@ -71,24 +77,5 @@ when "debian"
   service "logstash-forwarder" do
     provider Chef::Provider::Service::Upstart
     action [ :enable, :start ]
-  end
-when "rhel","fedora"
-  template "/etc/init.d/logstash-forwarder" do
-    mode "0755"
-    source "logstash-forwarder.init.erb"
-    variables(
-      :dir              => node["logstash-forwarder"]["dir"],
-      :user             => node["logstash-forwarder"]["user"],
-      :host             => node["logstash-forwarder"]["host"],
-      :port             => node["logstash-forwarder"]["port"],
-      :ssl_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
-      :log_dir          => node["logstash-forwarder"]["log_dir"],
-      :files_to_watch   => node["logstash-forwarder"]["files_to_watch"]
-    )
-    notifies :restart, "service[logstash-forwarder]"
-  end
-
-  service "logstash-forwarder" do
-    action [ :enable, :start]
   end
 end

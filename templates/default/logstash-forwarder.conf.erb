@@ -11,7 +11,7 @@ chdir <%= @dir %>
 setuid <%= @user %>
 
 script
-  exec <%= @dir %>/bin/logstash-forwarder.sh --host <%= @host %> --port <%= @port %> --ssl-ca-path <%= @ssl_certificate %> <%= @files_to_watch.join(" ") %> >> <%= @log_dir %>/logstash-forwarder.log 2>&1
+  exec <%= @dir %>/bin/logstash-forwarder.sh -c <%= @config_file %> >> <%= @log_dir %>/logstash-forwarder.log 2>&1
 end script
 
 emits logstash-forwarder-running

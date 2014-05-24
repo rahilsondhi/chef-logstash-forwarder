@@ -2,7 +2,7 @@
 
 ## Description
 
-Installs and configures [Lumberjack](https://github.com/jordansissel/lumberjack).
+Installs and configures [Logstash-forwarder](https://github.com/elasticsearch/logstash-forwarder).
 
 ## Requirements
 
@@ -17,25 +17,25 @@ Installs and configures [Lumberjack](https://github.com/jordansissel/lumberjack)
 
 ## Attributes
 
-* `node["lumberjack"]["version"]` - Version of Lumberjack to install.
-* `node["lumberjack"]["user"]` - User for Lumberjack.
-* `node["lumberjack"]["group"]` - Group for Lumberjack.
-* `node["lumberjack"]["dir"]` - Directory to install into.
-* `node["lumberjack"]["log_dir"]` - Log directory.
-* `node["lumberjack"]["host"]` - Host for Lumberjack to connect to.
-* `node["lumberjack"]["port"]` - Port for Lumberjack to connect to.
-* `node["lumberjack"]["ssl_key"]` - SSL key for Lumberjack communication.
-* `node["lumberjack"]["ssl_certificate"]` - SSL certificate for Lumberjack
+* `node["logstash-forwarder"]["version"]` - Version of Logstash-forwarder to install.
+* `node["logstash-forwarder"]["user"]` - User for Logstash-forwarder.
+* `node["logstash-forwarder"]["group"]` - Group for Logstash-forwarder.
+* `node["logstash-forwarder"]["dir"]` - Directory to install into.
+* `node["logstash-forwarder"]["log_dir"]` - Log directory.
+* `node["logstash-forwarder"]["host"]` - Host for Logstash-forwarder to connect to.
+* `node["logstash-forwarder"]["port"]` - Port for Logstash-forwarder to connect to.
+* `node["logstash-forwarder"]["ssl_key"]` - SSL key for Logstash-forwarder communication.
+* `node["logstash-forwarder"]["ssl_certificate"]` - SSL certificate for Logstash-forwarder
   communication.
-* `node["lumberjack"]["files_to_watch"]` - Array of files to watch.
-* `node["lumberjack"]["logstash_role"]` – Role assigned to Logstash server for search.
-* `node["lumberjack"]["logstash_fqdn"]` – FQDN to Logstash server if you're trying to
+* `node["logstash-forwarder"]["files_to_watch"]` - Array of files to watch.
+* `node["logstash-forwarder"]["logstash_role"]` – Role assigned to Logstash server for search.
+* `node["logstash-forwarder"]["logstash_fqdn"]` – FQDN to Logstash server if you're trying to
   target one that isn't searchable.
 
 ## Recipes
 
-* `recipe[lumberjack]` will install Lumberjack.
-* `recipe[lumberjack::certificates]` will configure a Lumberjack key and
+* `recipe[logstash-forwarder]` will install Logstash-forwarder.
+* `recipe[logstash-forwarder::certificates]` will configure a Logstash-forwarder key and
   certificate.
 
 ## Usage
@@ -45,7 +45,7 @@ following:
 
 ```ruby
 default_attributes(
-  "lumberjack" => {
+  "logstash-forwarder" => {
     "logstash_fqdn" => "http://logstash.example.com"
   }
 )
@@ -55,13 +55,13 @@ Or in a Chef Server environment:
 
 ```ruby
 default_attributes()
-  "lumberjack" => {
+  "logstash-forwarder" => {
     "logstash_role" => "logstash_server"
   }
 )
 ```
 
-If you use the `lumberjack::certificates` recipe, `node["lumberjack"]["ssl_certificate_contents"]`
-will be populated with the contents of the Lumberjack certificate to
+If you use the `logstash-forwarder::certificates` recipe, `node["logstash-forwarder"]["ssl_certificate_contents"]`
+will be populated with the contents of the Logstash-forwarder certificate to
 secure client/server communication.  The default recipe uses this attribute to
 create a client-side certificate.
