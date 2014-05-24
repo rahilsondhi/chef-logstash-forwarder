@@ -1,17 +1,10 @@
 {
   "network": {
-    "servers": [ <% @hosts.each do |host| "\"#{host}:#{@port}\"," end %> ],
+    "servers": [ <%= @hosts %> ],
     "ssl certificate": "<%= @ssl_certificate %>",
     "ssl ca": "<%= @ssl_ca_certificate %>",
     "ssl key": "<%= @ssl_key %>",
-    "timeout": "<%= @timeout %>"
+    "timeout": <%= @timeout %>
   },
-  "files": [
-    {
-      "paths": [
-        "/var/log/syslog"
-      ],
-      "fields": { "type": "syslog" }
-    }
-  ]
+<%= @files %>
 }

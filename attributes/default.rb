@@ -9,7 +9,7 @@ default["logstash-forwarder"]["timeout"]                    = "15"
 default["logstash-forwarder"]["ssl_certificate_path"]       = ""
 default["logstash-forwarder"]["ssl_key_path"]               = ""
 default["logstash-forwarder"]["ssl_ca_certificate_path"]    = ""
-default["logstash-forwarder"]["files_to_watch"]             = [ "/var/log/syslog" ]
+default["logstash-forwarder"]["files"]                      = { "syslog" => [ '/var/log/syslog' ]}
 default["logstash-forwarder"]["logstash_role"]              = "logstash"
 default["logstash-forwarder"]["logstash_fqdn"]              = ""
 default["logstash-forwarder"]["config_file"]                = "#{node["logstash-forwarder"]["dir"]}/logstash-forwarder.conf"

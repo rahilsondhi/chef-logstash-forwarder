@@ -10,6 +10,18 @@ node["logstash-forwarder"]["hosts"].each do |host|
 end
 host_hash = host_hash[0...-1]
 
+file_list = "  \"files\": ["
+node["logstash-forwarder"]["files"].each do |type, files| 
+  if !files.empty?
+    file_list = file_list + "\n    {\n"
+    file_list = file_list + "      \"paths\": #{files},\n"
+    file_list = file_list + "      \"fields\": { \"type\": \"#{type}\" }\n"
+    file_list = file_list + "    },"
+  end
+end
+file_list = file_list[0...-1]
+file_list = file_list + "\n  ]"
+
 group node["logstash-forwarder"]["group"] do
   system true
 end
@@ -51,12 +63,13 @@ template node["logstash-forwarder"]["config_file"] do
   mode "0644"
   source "logstash-forwarder.settings.conf.erb"
   variables(
-    :hosts            => host_hash,
-    :timeout          => node["logstash-forwarder"]["timeout"],
-    :ssl_certificate  => node["logstash-forwarder"]["ssl_certificate_path"],
+    :hosts               => host_hash,
+    :files               => file_list,
+    :timeout             => node["logstash-forwarder"]["timeout"],
+    :ssl_certificate     => node["logstash-forwarder"]["ssl_certificate_path"],
     :ssl_ca_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
-    :ssl_key          => node["logstash-forwarder"]["ssl_key_path"],
-    :files_to_watch   => node["logstash-forwarder"]["files_to_watch"]
+    :ssl_key             => node["logstash-forwarder"]["ssl_key_path"],
+    :files_to_watch      => node["logstash-forwarder"]["files_to_watch"]
   )
   notifies :restart, "service[logstash-forwarder]"
 end
