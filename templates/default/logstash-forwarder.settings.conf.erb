@@ -1,9 +1,6 @@
 {
   "network": {
-        hash.sort.each do |k,v|
-          result << '    ' + key_value_to_str(k, v)
-        end
-    "servers": [ <% @hosts.each do |host| p "\"#{host}:#{port}\"," end %> ],
+    "servers": [ <% @hosts.each do |host| "\"#{host}:#{@port}\"," end %> ],
     "ssl certificate": "<%= @ssl_certificate %>",
     "ssl ca": "<%= @ssl_ca_certificate %>",
     "ssl key": "<%= @ssl_key %>",

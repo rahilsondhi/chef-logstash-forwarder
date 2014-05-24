@@ -4,6 +4,12 @@ if node["logstash-forwarder"]["ssl_ca_certificate_path"].empty?
   Chef::Application.fatal!("You must have the CA certificate installed which signed the server's certificate")
 end
 
+host_hash = ""
+node["logstash-forwarder"]["hosts"].each do |host| 
+  host_hash = host_hash + "\"#{host}:#{node["logstash-forwarder"]["port"]}\","
+end
+host_hash = host_hash[0...-1]
+
 group node["logstash-forwarder"]["group"] do
   system true
 end
@@ -41,6 +47,20 @@ logrotate_app "logstash-forwarder" do
   create "644 root root"
 end
 
+template node["logstash-forwarder"]["config_file"] do
+  mode "0644"
+  source "logstash-forwarder.settings.conf.erb"
+  variables(
+    :hosts            => host_hash,
+    :timeout          => node["logstash-forwarder"]["timeout"],
+    :ssl_certificate  => node["logstash-forwarder"]["ssl_certificate_path"],
+    :ssl_ca_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
+    :ssl_key          => node["logstash-forwarder"]["ssl_key_path"],
+    :files_to_watch   => node["logstash-forwarder"]["files_to_watch"]
+  )
+  notifies :restart, "service[logstash-forwarder]"
+end
+
 case node["platform_family"]
 when "debian"
 
@@ -52,24 +72,6 @@ when "debian"
       :user             => node["logstash-forwarder"]["user"],
       :log_dir          => node["logstash-forwarder"]["log_dir"],
       :config_file      => node["logstash-forwarder"]["config_file"]
-    )
-    notifies :restart, "service[logstash-forwarder]"
-  end
-
-  template node["logstash-forwarder"]["config_file"] do
-    mode "0644"
-    source "logstash-forwarder.settings.conf.erb"
-    variables(
-      :dir              => node["logstash-forwarder"]["dir"],
-      :user             => node["logstash-forwarder"]["user"],
-      :hosts            => node["logstash-forwarder"]["hosts"],
-      :port             => node["logstash-forwarder"]["port"],
-      :timeout          => node["logstash-forwarder"]["timeout"],
-      :ssl_certificate  => node["logstash-forwarder"]["ssl_certificate_path"],
-      :ssl_ca_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
-      :ssl_key          => node["logstash-forwarder"]["ssl_key_path"],
-      :log_dir          => node["logstash-forwarder"]["log_dir"],
-      :files_to_watch   => node["logstash-forwarder"]["files_to_watch"]
     )
     notifies :restart, "service[logstash-forwarder]"
   end
