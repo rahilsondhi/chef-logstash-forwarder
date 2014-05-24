@@ -2,7 +2,7 @@ maintainer        "Phil Dougherty"
 maintainer_email  "phil@brandingbrand.com"
 license           "Apache 2.0"
 description       "Installs and configures Logstash-Forwarder."
-version           "0.0.2"
+version           "0.0.3"
 recipe            "logstash-forwarder", "Installs and configures Lumberjack"
 name              "logstash-forwarder"
 
