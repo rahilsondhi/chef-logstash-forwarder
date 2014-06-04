@@ -6,5 +6,13 @@
     "ssl key": "<%= @ssl_key %>",
     "timeout": <%= @timeout %>
   },
-<%= @files %>
+  "files": [
+    <% @files.each_with_index do |(file_type, file_array), index|
+       unless index == 0 %>,<% end %>
+      {
+        "fields": { "type": "<%= file_type %>" },
+        "paths": <%= file_array %>
+      }<% end %>
+  ]
 }
+

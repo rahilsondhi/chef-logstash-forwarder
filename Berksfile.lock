@@ -1,0 +1,9 @@
+DEPENDENCIES
+  logstash-forwarder
+    path: .
+    metadata: true
+
+GRAPH
+  logrotate (1.6.0)
+  logstash-forwarder (0.0.3)
+    logrotate (>= 0.0.0)

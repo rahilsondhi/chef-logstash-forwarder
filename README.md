@@ -1,4 +1,4 @@
-# lumberjack [![Build Status](https://secure.travis-ci.org/hectcastro/chef-lumberjack.png?branch=master)](http://travis-ci.org/hectcastro/chef-lumberjack)
+# Logstash-forwarder [![Build Status](https://secure.travis-ci.org/hectcastro/chef-lumberjack.png?branch=master)](http://travis-ci.org/hectcastro/chef-lumberjack)
 
 ## Description
 
@@ -27,10 +27,16 @@ Installs and configures [Logstash-forwarder](https://github.com/elasticsearch/lo
 * `node["logstash-forwarder"]["ssl_key"]` - SSL key for Logstash-forwarder communication.
 * `node["logstash-forwarder"]["ssl_certificate"]` - SSL certificate for Logstash-forwarder
   communication.
-* `node["logstash-forwarder"]["files_to_watch"]` - Array of files to watch.
+* `node["logstash-forwarder"]["files"]` - Collection of files to watch.<br>
+If you require a collection of files to watch. The structure looks like this:<br>
+`{ "syslog" => ['/var/log/syslog'], "auth" => ['/var/log/auth.log'] }`
+
 * `node["logstash-forwarder"]["logstash_role"]` – Role assigned to Logstash server for search.
 * `node["logstash-forwarder"]["logstash_fqdn"]` – FQDN to Logstash server if you're trying to
   target one that isn't searchable.
+
+
+
 
 ## Recipes
 
