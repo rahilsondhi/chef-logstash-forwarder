@@ -1,16 +1,16 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides: skeleton
-# Required-Start: $remote_fs $syslog
-# Required-Stop: $remote_fs $syslog
-# Default-Start: 2 3 4 5
-# Default-Stop: 0 1 6
+# Provides:          skeleton
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
 # Short-Description: Example initscript
-# Description: This file should be used to construct scripts to be
-# placed in /etc/init.d.
+# Description:       This file should be used to construct scripts to be
+#                    placed in /etc/init.d.
 ### END INIT INFO
 
-# Author: Jordan Sissel  <jordan.sissel@dreamhost.com>
+# Author: Jordan Sissel <jordan.sissel@dreamhost.com>
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
@@ -18,9 +18,6 @@ DESC="log shipper"
 NAME=logstash-forwarder
 DAEMON=/opt/logstash-forwarder/bin/logstash-forwarder
 DAEMON_ARGS="-config <%= @config_file %> -spool-size 100 >> <%= @log_dir %>/logstash-forwarder.log 2>&1"
-
-
-
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
