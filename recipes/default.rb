@@ -62,13 +62,10 @@ end
 
 case node["platform_family"]
 when "debian"
-
-  template "/etc/init/logstash-forwarder.conf" do
-    mode "0644"
-    source "logstash-forwarder.conf.erb"
+  template "/etc/init.d/logstash-forwarder" do
+    mode "0755"
+    source "logstash-forwarder.init.erb"
     variables(
-      :dir              => node["logstash-forwarder"]["dir"],
-      :user             => node["logstash-forwarder"]["user"],
       :log_dir          => node["logstash-forwarder"]["log_dir"],
       :config_file      => node["logstash-forwarder"]["config_file"]
     )
@@ -76,7 +73,7 @@ when "debian"
   end
 
   service "logstash-forwarder" do
-    provider Chef::Provider::Service::Upstart
+    provider Chef::Provider::Service::Init::Debian
     action [ :enable, :start ]
   end
 end
