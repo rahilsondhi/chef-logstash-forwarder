@@ -1,7 +1,7 @@
 include_recipe "logrotate"
 
-if node["logstash-forwarder"]["ssl_ca_certificate_path"].empty?
-  Chef::Application.fatal!("You must have the CA certificate installed which signed the server's certificate")
+if node["logstash-forwarder"]["ssl_certificate"].empty? || node["logstash-forwarder"]["ssl_key"].empty? || node["logstash-forwarder"]["ssl_ca"].empty?
+  Chef::Application.fatal!("You don't set all three ssl attributes. logstash-forwarder needs them to communicate with logstash.")
 end
 
 group node["logstash-forwarder"]["group"] do
