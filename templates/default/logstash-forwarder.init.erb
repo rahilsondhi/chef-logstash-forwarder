@@ -16,8 +16,8 @@
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="log shipper"
 NAME=logstash-forwarder
-DAEMON=/opt/logstash-forwarder/bin/logstash-forwarder
-DAEMON_ARGS="-config <%= @config_file %> -spool-size 100 >> <%= @log_dir %>/logstash-forwarder.log 2>&1"
+DAEMON=<%= node["logstash-forwarder"]["dir"] %>/bin/logstash-forwarder
+DAEMON_ARGS="-config <%= node["logstash-forwarder"]["config_file"] %> -spool-size 100 >> <%= node["logstash-forwarder"]["log_dir"] %>/logstash-forwarder.log 2>&1"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 

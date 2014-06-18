@@ -41,22 +41,9 @@ logrotate_app "logstash-forwarder" do
   create "644 root root"
 end
 
-host_hash = node["logstash-forwarder"]["hosts"].map do |host|
-  %("#{host}:#{node["logstash-forwarder"]["port"]}")
-end.join ','
-
 template node["logstash-forwarder"]["config_file"] do
   mode "0644"
   source "logstash-forwarder.settings.conf.erb"
-  variables(
-    :hosts               => host_hash,
-    :files               => node["logstash-forwarder"]["files"],
-    :timeout             => node["logstash-forwarder"]["timeout"],
-    :ssl_certificate     => node["logstash-forwarder"]["ssl_certificate_path"],
-    :ssl_ca_certificate  => node["logstash-forwarder"]["ssl_ca_certificate_path"],
-    :ssl_key             => node["logstash-forwarder"]["ssl_key_path"],
-    :files_to_watch      => node["logstash-forwarder"]["files_to_watch"]
-  )
   notifies :restart, "service[logstash-forwarder]"
 end
 
@@ -65,10 +52,6 @@ when "debian"
   template "/etc/init.d/logstash-forwarder" do
     mode "0755"
     source "logstash-forwarder.init.erb"
-    variables(
-      :log_dir          => node["logstash-forwarder"]["log_dir"],
-      :config_file      => node["logstash-forwarder"]["config_file"]
-    )
     notifies :restart, "service[logstash-forwarder]"
   end
 

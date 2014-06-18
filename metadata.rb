@@ -1,8 +1,8 @@
-maintainer        "Phil Dougherty"
-maintainer_email  "phil@brandingbrand.com"
+maintainer        "Rahil Sondhi"
+maintainer_email  "rahilsondhi@gmail.com"
 license           "Apache 2.0"
 description       "Installs and configures Logstash-Forwarder."
-version           "0.0.3"
+version           "0.0.4"
 recipe            "logstash-forwarder", "Installs and configures Lumberjack"
 name              "logstash-forwarder"
 

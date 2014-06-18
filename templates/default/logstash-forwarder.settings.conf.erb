@@ -1,18 +1,18 @@
 {
   "network": {
-    "servers": [ <%= @hosts %> ],
-    "ssl certificate": "<%= @ssl_certificate %>",
-    "ssl ca": "<%= @ssl_ca_certificate %>",
-    "ssl key": "<%= @ssl_key %>",
-    "timeout": <%= @timeout %>
+    "servers": <%= node["logstash-forwarder"]["hosts"].inspect %>,
+    "ssl certificate": "<%= node["logstash-forwarder"]["ssl_certificate"] %>",
+    "ssl ca": "<%= node["logstash-forwarder"]["ssl_ca"] %>",
+    "ssl key": "<%= node["logstash-forwarder"]["ssl_key"] %>",
+    "timeout": <%= node["logstash-forwarder"]["timeout"] %>
   },
   "files": [
-    <% @files.each_with_index do |(file_type, file_array), index|
-       unless index == 0 %>,<% end %>
+    <% node["logstash-forwarder"]["files"].each do |type, paths| %>
       {
-        "fields": { "type": "<%= file_type %>" },
-        "paths": <%= file_array %>
-      }<% end %>
+        "paths": <%= paths.inspect %>,
+        "fields": { "type": "<%= type %>" }
+      }
+    <% end %>
   ]
 }
 
